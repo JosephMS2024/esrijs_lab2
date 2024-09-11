@@ -20,8 +20,10 @@
           "esri/widgets/Locate", // Adding in the locate button
           "esri/widgets/Expand",
           "esri/Basemap",
-          "esri/widgets/Search"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search)  {
+          "esri/widgets/Search",
+          "esri/Graphic",
+          "esri/GraphicsLayer"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search, Graphic, GraphicsLayer)  {
       //The desired original basemap loads; imagery.      
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurDz4gU3tTW0RIc-K_Y4-kqaP1xP59QOvyV7mnktLb7t9zW1QWyrrWLxFNuhtg08WE4UCTkfUJdNwZYJDt3t4FpgDTe6my768nLtuR9R52vilDWW14b_A0oiII_MTXifMG5mWsNz5YWE_2DmWVSv8HLvOGvSxTuyiyXIO42CgmtK6t_fryYvWH93EFjJyrMI-1rfAEQ93vywzL1hBhfIJ13DcfYRrsncNv5iHmEBgfAz8AT1_VFqKPzAC";
       const map = new Map({
@@ -34,6 +36,31 @@
         zoom: 11, // Zoom level
         container: "viewDiv" // Div element
       });
+
+      // Adding the constructor for the graphics layer for Lab 2. 
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      const point = { //Create a point  
+        type: "point",  
+        longitude: -149.1811,    //long lat of a house. 
+        latitude: 61.6113
+      };
+      const simpleMarkerSymbol = {  
+        type: "simple-marker",  
+        color: [0, 0, 139],  // Color of blues rock
+        outline: {  
+          color: [255, 255, 255], // White  
+          width: 1
+        }  
+      };
+      const pointGraphic = new Graphic({  
+        geometry: point,  
+        symbol: simpleMarkerSymbol  
+      });
+
+      graphicsLayer.add(pointGraphic);
+      
       // Challenge 3; The basemap gallery fails to load; unsure on fix. 
       const basemapGallery = new BasemapGallery({
         view: view,
