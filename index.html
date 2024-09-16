@@ -188,6 +188,7 @@
       });
       map.add(AKAPTLayer);
 
+      //Beginning of Lab 2 - Part 6
       const airportRenderer = {
         "type": "simple",
         "symbol": {
@@ -197,13 +198,73 @@
           "height": "18px"
         }
       }
-
-      const airportLayer = new FeatureLayer({
-          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
-          renderer: airportRenderer
+ 
+      //Placement of the airport labels...important to put it before the feature layer block. 
+      const airportLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+         }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.Fac_Name"
+        }
+      };    
+        const airportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_GEOG_576/FeatureServer",
+          renderer: airportRenderer,
+          definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports
+          labelingInfo: [airportLabels]
         });
       
+        //Heliport Renderer here. 
+      const heliportRenderer = {
+        "type": "simple",
+          "symbol": {
+          "type": "picture-marker",
+          "url": "https://JosephMS2024.github.io/esrijs_lab2/helicopter-icon-21965.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+      //Heliport Labels here
+      const heliportLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+         }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.Fac_Name"
+        }
+      };
+       //Heliport label here
+        const heliportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_GEOG_576/FeatureServer",
+          renderer: heliportRenderer,
+          definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for heliports
+          labelingInfo: [heliportLabels]
+        });
+
+      map.add(heliportLayer);
       map.add(airportLayer);
+      
   });  
   
   </script>
