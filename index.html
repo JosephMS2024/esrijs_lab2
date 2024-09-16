@@ -22,46 +22,23 @@
           "esri/Basemap",
           "esri/widgets/Search",
           "esri/Graphic",
-          "esri/GraphicsLayer"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search, Graphic, GraphicsLayer)  {
+          "esri/layers/GraphicsLayer",
+          "esri/layers/FeatureLayer"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search, Graphic, GraphicsLayer, FeatureLayer)  {
       //The desired original basemap loads; imagery.      
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurDz4gU3tTW0RIc-K_Y4-kqaP1xP59QOvyV7mnktLb7t9zW1QWyrrWLxFNuhtg08WE4UCTkfUJdNwZYJDt3t4FpgDTe6my768nLtuR9R52vilDWW14b_A0oiII_MTXifMG5mWsNz5YWE_2DmWVSv8HLvOGvSxTuyiyXIO42CgmtK6t_fryYvWH93EFjJyrMI-1rfAEQ93vywzL1hBhfIJ13DcfYRrsncNv5iHmEBgfAz8AT1_VFqKPzAC";
       const map = new Map({
         basemap: "arcgis-imagery"
       });
-      //Challenge 2 above with basemap change, and Challenge 1 below - center and scale changed; shifted to Palmer, AK. 
+      //Lab 1 - Challenge 2 above with basemap change, and Challenge 1 below - center and scale changed; shifted to Palmer, AK. 
       const view = new MapView({
         map: map,
         center: [-149.1811, 61.6113], // Longitude, latitude for Palmer, Alaska
-        zoom: 11, // Zoom level
+        zoom: 5, // Zoom level
         container: "viewDiv" // Div element
       });
 
-      // Adding the constructor for the graphics layer for Lab 2. 
-      const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
-
-      const point = { //Create a point  
-        type: "point",  
-        longitude: -149.1811,    //long lat of a house. 
-        latitude: 61.6113
-      };
-      const simpleMarkerSymbol = {  
-        type: "simple-marker",  
-        color: [0, 0, 139],  // Color of blues rock
-        outline: {  
-          color: [255, 255, 255], // White  
-          width: 1
-        }  
-      };
-      const pointGraphic = new Graphic({  
-        geometry: point,  
-        symbol: simpleMarkerSymbol  
-      });
-
-      graphicsLayer.add(pointGraphic);
-      
-      // Challenge 3; The basemap gallery fails to load; unsure on fix. 
+     // Lab 1 - Challenge 3; The basemap gallery fails to load; unsure on fix. 
       const basemapGallery = new BasemapGallery({
         view: view,
         source: [Basemap.fromId("arcgis-topographic"),Basemap.fromId("arcgis-streets")]
@@ -74,7 +51,7 @@
 
       view.ui.add(bgExpand, "top-left"); //this controls the location of the "locate" widget in the UI. 
 
-      //Challenge 5; The search widget is functioning as it should.       
+      //Lab 1 - Challenge 5; The search widget is functioning as it should.       
       const searchWidget = new Search({
         view: view
       });
@@ -82,7 +59,7 @@
         position: "top-right",
         index: 2
       });
-      //Challenge 4; the locate button is working as it should. 
+      //Lab 1 - Challenge 4; the locate button is working as it should. 
       const locateBtn = new Locate({
         view: view
       });
@@ -90,7 +67,129 @@
       view.ui.add(locateBtn, {
           position: "bottom-right"
       });
-    });  
+      // Adding the constructor for the graphics layer for Lab 2. 
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      const point = { //Create's point  
+        type: "point",  
+        longitude: -149.47890,    //long lat of Iditarod HQ's.  
+        latitude: 61.56088
+      };
+      //Lab 2 - Challenge 1:
+      const simpleMarkerSymbol = {  
+        type: "simple-marker",  
+        color: [0, 255, 0],  // Green Color
+        style: "diamond",
+        outline: {  
+          color: [0, 255, 0], // Green Color  
+          width: 1
+        }  
+      };
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      }
+      const attributes = {
+        Name: "The Iditarod Headquarters",
+        Description: "The Headquarters for the last great sled dog race in the Wolrd. (https://iditarod.com/#)"
+      }
+      const pointGraphic = new Graphic({  
+        geometry: point,  
+        symbol: simpleMarkerSymbol,
+        attributes: attributes,
+        popupTemplate: popupTemplate  
+      });
+
+      graphicsLayer.add(pointGraphic);
+
+      //Lab 2 - Challenge 3:
+      const AK_Layer = new FeatureLayer({
+        url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Alaska_Native_Regional_Corporations_v1/FeatureServer"
+      });
+      map.add(AK_Layer);
+      
+      //Lab 2 - Challenge 4:
+      const AK_airportlayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_GEOG_576/FeatureServer"
+      });
+      map.add(AK_airportlayer);
+
+      //Lab 2 - Challenge 2: 
+      const polyline = {
+        type: "polyline",
+        paths: [
+            [-149.4808, 61.5601], //Longitude, latitude
+            [-149.4797, 61.5603], //Longitude, latitude
+            [-149.4789, 61.5606]  //Longitude, latitude
+        ]
+      };
+      const simpleLineSymbol = {
+        type: "simple-line",
+        color: [226, 119, 40], // Orange
+        width: 2
+      };
+
+      const polylineGraphic = new Graphic({
+        geometry: polyline,
+        symbol: simpleLineSymbol
+      });
+      graphicsLayer.add(polylineGraphic);
+
+       // Create a polygon geometry
+      const polygon = {
+        type: "polygon",
+        rings: [
+            [-149.4806, 61.5602], //Longitude, latitude
+            [-149.4806, 61.5615], //Longitude, latitude
+            [-149.4774, 61.5615], //Longitude, latitude
+            [-149.4771, 61.5608], //Longitude, latitude
+        ]
+      };
+
+      const simpleFillSymbol = {
+        type: "simple-fill",
+        color: [227, 139, 79, 0.8],  // Orange, opacity 80%
+        outline: {
+            color: [255, 255, 255],
+            width: 1
+        }
+      };
+
+      const polygonGraphic = new Graphic({
+        geometry: polygon,
+        symbol: simpleFillSymbol,
+
+      });
+      graphicsLayer.add(polygonGraphic);
+
+      // Lab 2 - Challenge 3
+      const popupAKNC = {
+        "title": "Alaska Native Corporations",
+        "content": "<b>Name:<b> {NAME}<br><b>Land Area(sq meters): </b>{AREALAND}<br>"
+      }
+
+      const AKNCLayer = new FeatureLayer({
+        url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Alaska_Native_Regional_Corporations_v1/FeatureServer",
+        outFields: ["Name", "Land Area"],
+        popupTemplate: popupAKNC
+      });
+      map.add(AKNCLayer);
+
+      //Lab 2 - Challenge 4
+      const popupAKAIRPORT = {
+        "title": "Alaska Airport Information",
+        "content": "<b>Owner:<b> {Owner_Name}<br><b>Phone Number: </b>{Owner_Phon}<br>"
+      }
+      const AKAPTLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports_GEOG_576/FeatureServer",
+        outFields: ["Owner Name","Phone"],
+        popupTemplate: popupAKAIRPORT
+      });
+      map.add(AKAPTLayer);
+      
+  });  
+  
   </script>
 
   <style>
