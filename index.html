@@ -17,8 +17,8 @@
           "esri/Map", 
           "esri/views/MapView",
           "esri/widgets/BasemapGallery", // Adding in the basemap gallery
-          "esri/widgets/Locate", // Adding in the locate button
-          "esri/widgets/Expand",
+          "esri/widgets/Expand", // Adding in the locate button
+          "esri/widgets/Locate",
           "esri/Basemap",
           "esri/widgets/Search",
           "esri/Graphic",
@@ -187,7 +187,23 @@
         popupTemplate: popupAKAIRPORT
       });
       map.add(AKAPTLayer);
+
+      const airportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://JosephMS2024.github.io/esrijs_lab2/local_airport_24dp_5F6368.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+
+      const airportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
+          renderer: airportRenderer
+        });
       
+      map.add(airportLayer);
   });  
   
   </script>
