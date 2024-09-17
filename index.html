@@ -24,7 +24,7 @@
           "esri/Graphic",
           "esri/layers/GraphicsLayer",
           "esri/layers/FeatureLayer"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search, Graphic, GraphicsLayer, FeatureLayer)  {
+    ], function(esriConfig, Map, MapView, BasemapGallery, Expand, Locate, Basemap, Search, GraphicsLayer, FeatureLayer)  {
       //The desired original basemap loads; imagery.      
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurDz4gU3tTW0RIc-K_Y4-kqaP1xP59QOvyV7mnktLb7t9zW1QWyrrWLxFNuhtg08WE4UCTkfUJdNwZYJDt3t4FpgDTe6my768nLtuR9R52vilDWW14b_A0oiII_MTXifMG5mWsNz5YWE_2DmWVSv8HLvOGvSxTuyiyXIO42CgmtK6t_fryYvWH93EFjJyrMI-1rfAEQ93vywzL1hBhfIJ13DcfYRrsncNv5iHmEBgfAz8AT1_VFqKPzAC";
       const map = new Map({
@@ -41,7 +41,7 @@
      // Lab 1 - Challenge 3; The basemap gallery fails to load; unsure on fix. 
       const basemapGallery = new BasemapGallery({
         view: view,
-        source: [Basemap.fromId("arcgis-topographic"),Basemap.fromId("arcgis-streets")]
+        source: [Basemap.fromId("arcgis-topographic"),Basemap.fromId("arcgis-streets"),Basemap.fromId("arcgis-imagery")]
       });
 
       const bgExpand = new Expand({
@@ -67,6 +67,7 @@
       view.ui.add(locateBtn, {
           position: "bottom-right"
       });
+
       // Adding the constructor for the graphics layer for Lab 2. 
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
